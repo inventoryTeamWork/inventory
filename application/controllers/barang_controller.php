@@ -35,8 +35,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 		$this->load->model('barang_model');
 		$databarang=$this->barang_model->pindahpage($_POST['page']);
 		echo json_encode($databarang);
-		//echo $_POST['page'].'nilai ini berasal dari server';
-		//echo 'ajax sukses';
+		
 		}
 		
 		

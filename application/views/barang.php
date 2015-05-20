@@ -45,7 +45,8 @@ if (!defined('BASEPATH'))
                                     
                                 </tbody>
                             </table>
-							<input type="hidden" id="total_record2"/> <input type="hidden" id="data-pencarian" rows=5 style="visible:0"></input> <input type="hidden" id="total_record_cari"/>
+							<input type="hidden" id="total_record2"/> <input type="hidden" id="data-pencarian" rows=5 style="visible:0"></input> <input type="hidden" id="total_record_cari"/><input type="hidden" id="page-start"/><input type="hidden" id="page-finish"/>
+							<input type="hidden" id="page-start-next"/><input type="hidden" id="page-finish-next"/>
                         </div>
                         <div class="row">
                             <div class="col-xs-6">
@@ -168,7 +169,7 @@ if (!defined('BASEPATH'))
 					
 					 
 						
-						function pindahpage(page){
+						function pindahpage(page,pagestart,pagefinish){
 							var pagenum=page.substring(5, 4);
 							//alert(pagenum);
 							var targeturl="<?php echo base_url().'index.php/barang_controller/pindahpage'?>";
@@ -180,11 +181,14 @@ if (!defined('BASEPATH'))
 							 },
 							
 							success: function (data) {
+						
+							//alert(parseInt(pagestart)+2);
+							
 							var obj = JSON.parse(data);
+							var x=pagefinish;
 							$("#tbody_barang").empty();
 							for (var i =0; i< obj.length; i++){
 							$("#tbody_barang").append("<tr><td></td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
-								
 								$("#button-hapus"+i).click(function(event){
 									event.preventDefault();
 									tampil_modal_hapus(this.id);
@@ -199,11 +203,13 @@ if (!defined('BASEPATH'))
 									event.preventDefault();
 									tampil_screen_upload(this.id);
 								});
-							
+							x ++;
+							buat_info_tabel(obj[0]['rownum'],obj[i]['rownum'],obj[i]['totalrecord']);
 							}
+							
 							var start=(pagenum * 4) + 1;
 							var lastlimit=start + 3;
-							$("#sample-table-2_info").text('Menampilkan '+ start+' Sampai '+lastlimit +' Dari ' + $('#total_record2').val() +' Records');
+							var myselector=document.getElementById("tbody_barang").getElementsByTagName("tr");
 							},
 							error: function (jqXHR, textStatus, errorThrown) {
 							alert('ajax not succesfull'+ errorThrown);
@@ -214,9 +220,12 @@ if (!defined('BASEPATH'))
 							}
 				
 							});
+							
 						}	
 						
 						function pindahpage_cari(page,data){
+						
+						
 						
 						var obj = JSON.parse(data);
 						//alert(obj[0]['nama_barang']);
@@ -224,46 +233,78 @@ if (!defined('BASEPATH'))
 						pagenum=parseInt(pagenum) +1;
 						//alert(parseInt(pagenum)*3-2);
 						$("#tbody_barang").empty();
-						for (i=(parseInt(pagenum)*3)-2; i<(parseInt(pagenum)*3)+2; i++ ){
+						var a=0;
+						//alert(a+'gtregtwh');
+						for (i=(parseInt(pagenum)*3)-2; i<(parseInt(pagenum)*3)+2;  i++ ){
 							//<button type='button' class='btn btn-white btn-pink btn-sm'>Pink</button>
-							$("#tbody_barang").append("<tr><td></td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
+							$("#tbody_barang").append("<tr><td></td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+a+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
 								
-								$("#button-hapus"+i).click(function(event){
+								$("#button-hapus"+a).click(function(event){
 									event.preventDefault();
 									tampil_modal_hapus(this.id);
 								});
 								
-								$("#button-edit"+i).click(function(event){
+								$("#button-edit"+a).click(function(event){
+								alert(this.id+'ididididid');
 									event.preventDefault();
 									tampil_modal_edit(this.id);
 								});
 								
-								$("#button-foto"+i).click(function(event){
+								$("#button-foto"+a).click(function(event){
 									event.preventDefault();
 									tampil_screen_upload(this.id);
 								});
 							
-							
+							a ++;
+						}
+						//$("#page-start").val($("#page-start-next").val());
+						//$("#page-finsih").val($("#page-finsih-next").val());
+							buat_info_tabel(obj[0]['rownum'],obj[i]['rownum'],obj[i]['totalrecord']);
 						}
 						
+						
+						function buat_paging(total_record){
+						$("#paginationbarang").empty();
+							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-left"></i></a></li>');
+							var a=1;
+							var b=0;
+							for ( i=0; i< Math.floor(total_record/4); i++){
+							$("#paginationbarang").append('<li class="next" ><a  id="'+'page'+b+'"  >'+a+'</a></li>');
+							 $('#page'+b).bind('click', function() {
+									pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+									//$("#page-start").val(parseInt());
+									
+								});
+							a++;
+							b++;
+							}
+							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-right"></i></a></li>');
+							
 							
 						}
 						
 						
 						function buat_paging_cari(total_record){
 						$("#paginationbarang").empty();
-							$("#paginationbarang").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
+							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-left"></i></a></li>');
 							var a=1;
 							var b=0;
+							
+							
 							for ( i=0; i< Math.floor(total_record/4); i++){
-							$("#paginationbarang").append('<li class="next" ><a href="#"  id="'+'page'+b+'"  >'+a+'</a></li>');
+							$("#paginationbarang").append('<li class="next" ><a  id="'+'page'+b+'"  >'+a+'</a></li>');
 							 $('#page'+b).bind('click', function() {
 									pindahpage_cari(this.id,$('#data-pencarian').val());
+									
+
 								});
+								
 							a++;
 							b++;
 							}
-							$("#paginationbarang").append('<li class="prev"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+							
+							
+							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-right"></i></a></li>');
 							
 						}
 						
@@ -281,7 +322,7 @@ if (!defined('BASEPATH'))
 							//alert('search sukses');
 							
 								var obj = JSON.parse(data);
-								buat_paging_cari(obj.length)
+								
 								//alert(data);
 								//alert(obj.length);
 								$("#total_record_cari").val(obj.length);
@@ -306,6 +347,8 @@ if (!defined('BASEPATH'))
 											event.preventDefault();
 											tampil_screen_upload(this.id);
 										});
+										buat_paging_cari(obj[i]['totalrecord']);
+										buat_info_tabel(obj[0]['rownum'],obj[i]['rownum'],obj[i]['totalrecord']);
 								
 								}
 								var start=(pagenum * 4) + 1;
@@ -338,21 +381,16 @@ if (!defined('BASEPATH'))
 										control ++;
 									}
 								}
-						
-						//buat_index_pagging();
-						
 						function tampildatabarang(){
 							var targeturl="<?php echo base_url().'index.php/barang_controller/getbarangall'?>";
 							$.ajax({
 							url:targeturl,
 							type: "POST",
 							success: function (data) {
-							
 							var obj = JSON.parse(data);
 							var jumlahrecord=obj.length;
 							for (var i = 0; i < obj.length; i++) {
 								$("#tbody_barang").append("<tr><td></td><td>" + obj[i]['kode_barang'] + "</td>" + "<td>" + obj[i]['nama_produk'] + "</td><td>" + obj[i]['nama_barang'] + "</td><td>" + obj[i]['satuan'] + "</td><td>" + obj[i]['harga_beli'] + "</td><td>" + obj[i]['harga_jual'] + "</td><td>" + obj[i]['stock'] + "</td><td><button style='margin-right:3px;' id='button-edit" + i + "' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus" + i + "' style='margin-right:3px;' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto" + i + "'type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
-
 								$("#button-hapus" + i).click(function(event) {
 									event.preventDefault();
 									tampil_modal_hapus(this.id);
@@ -368,9 +406,10 @@ if (!defined('BASEPATH'))
 									tampil_screen_upload(this.id);
 								});
 								
-								
+								buat_info_tabel(obj[0]['rownum'],obj[i]['rownum'],obj[i]['totalrecord']);
 							}
-							
+							$("#page-start").val((obj.length-obj.length)+1);
+							$("#page-finish").val(obj.length);
 							},
 							error: function (jqXHR, textStatus, errorThrown) {
 							alert('ajax not succesfull'+ errorThrown);
@@ -397,6 +436,7 @@ if (!defined('BASEPATH'))
 						
 						function tampil_modal_edit(id){
 						 id=id.substring(11);
+						 alert(id);
 						 $("#kode_produk").empty();
 						  
 						 $("#modal-testing").fadeIn(1000);
@@ -496,22 +536,7 @@ if (!defined('BASEPATH'))
 						}
 						
 						
-						function buat_paging(total_record){
-						$("#paginationbarang").empty();
-							$("#paginationbarang").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
-							var a=1;
-							var b=0;
-							for ( i=0; i< Math.floor(total_record/4); i++){
-							$("#paginationbarang").append('<li class="next" ><a href="#"  id="'+'page'+b+'"  >'+a+'</a></li>');
-							 $('#page'+b).bind('click', function() {
-									pindahpage(this.id);
-								});
-							a++;
-							b++;
-							}
-							$("#paginationbarang").append('<li class="prev"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
-							
-						}
+						
 						
 						function getjumlahrecord(){
 						var t= <?php echo json_encode($totalrecord);?>;
@@ -551,7 +576,7 @@ if (!defined('BASEPATH'))
 									event.preventDefault();
 									tampil_screen_upload(this.id);
 								});
-								
+								buat_paging(obj[i]['totalrecord']);
 							}
 							$("#modal-testing").fadeOut("slow");
 			},
@@ -604,6 +629,7 @@ if (!defined('BASEPATH'))
 									tampil_screen_upload(this.id);
 								});
 								$("#modal-testing").fadeOut("slow");
+								buat_paging(obj[i]['totalrecord']);
 							}
 							
 							
@@ -656,6 +682,7 @@ if (!defined('BASEPATH'))
 									tampil_screen_upload(this.id);
 								});
 								$("#modal-testing").fadeOut("slow");
+								buat_paging(obj[i]['totalrecord']);
 							}
 				
 			},
@@ -780,20 +807,51 @@ if (!defined('BASEPATH'))
 
 var my_global_var='';
 		
+		function buat_info_tabel(startrow,finishrow,record_count){
+		 $("#sample-table-2_info").text("");
+		 
+		 $("#sample-table-2_info").text("Menampilkan "+startrow +" sampai "+finishrow+" dari "+record_count+"record");
 		
+		}
+		
+		
+		function buat_info_tabel_pindah_page(pagestart,pagefinish,record_count,pageselected){
+		//alert(pageselected);
+		 $("#sample-table-2_info").text("");
+		//$("#page-start-next").val(parseInt($("#page-start").val()) * (pageselected+1)+1);
+		//$("#page-finish-next").val(parseInt($("#page-finish").val()) + 5);	
+		$("#sample-table-2_info").text("Menampilkan "+ pagestart +"sampai"+pagefinish+" dari "+record_count+"record");
+		 /*
+		var first_row=grid_count-grid_count+1;
+		if(grid_count <= 5){
+			if(grid_count <=0){
+			$("#sample-table-2_info").text("Menampilkan 0 Sampai"+grid_count+" Dari "+record_count+" Record");
+			}else{
+			$("#sample-table-2_info").text("Menampilkan "+first_row +"sampai"+grid_count+" dari "+record_count+"record");
+			}
+		}else{
+		
+		//$("#sample-table-2_info").text("Menampilkan "+$("#page-start").val() +"sampai"+$("#page-finish").val()+" dari "+record_count+"record");
+		$("#page-start-next").val($("#page-start").val() * (pageselected+1)+1);
+		$("#page-finish-next").val(parseInt($("#page-finish").val()) + 5);	
 
+						
+						$("#sample-table-2_info").text("Menampilkan "+$("#page-start").val() +"sampai"+$("#page-finish").val()+" dari "+record_count+"record");
+						
+		
+		}
+		*/
+		}
 				
 		$("#modal-testing").hide();			  
 					  
 		$(document).ready(function() { 
-		
+		var myselector=document.getElementById("tbody_barang").getElementsByTagName("tr");
 		getjumlahrecord();
        tampildatabarang();
-	   var myselector=document.getElementById("tbody_barang").getElementsByTagName("tr");
-		alert(myselector.length +"testing");
 	   buat_paging($("#total_record2").val());
 	   
-	   $("#sample-table-2_info").text("");
+	  
 	   
 	   //if($('#total_record2').val() < 4 )
 		
@@ -804,8 +862,10 @@ var my_global_var='';
 		});
 		//perlu dicari alasannya
 		*/
-		$("#sample-table-2_info").text('Menampilkan 1 Sampai 4 Dari '+ $('#total_record2').val() +' Records');
-		alert(myselector.length+'testiiiiing');
+		
+		//$("#sample-table-2_info").text('Menampilkan 1 Sampai 4 Dari '+ $('#total_record2').val() +' Records');
+		//buat_info_tabel(myselector.length,$('#total_record2').val());
+		//alert(myselector.length+'testiiiiing');
 		$("#btn-cancel-input").click(function(event) {
 			event.preventDefault();
 			 $("#modal-testing").fadeOut("slow");

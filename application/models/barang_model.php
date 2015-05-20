@@ -1,10 +1,27 @@
 <?php
 class barang_model extends CI_Model{
 
+
+	public function gettotalrecordcari($param){
+	
+		try {
+		    $query=$this->db->query("select count(*) as totalrecord from barang where nama_barang ilike '%'||'$param'||'%' ") ;
+            return $query->result();
+        
+        }
+        
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }	
+	}
+
+
+
   
 	function cari_barang($param){
 		try {
-		    $query=$this->db->query("SELECT a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+		$totalrecordcari=$this->gettotalrecordcari($param);
+		    $query=$this->db->query("SELECT row_number() over (order by kode_barang nulls last) as rownum,'".$totalrecordcari[0]->totalrecord."' as totalrecord, a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
 			left join produk b 
 			on a.kode_produk=b.kode_produk 
 			where a.nama_barang ilike '%'||'$param'||'%'
@@ -59,7 +76,7 @@ class barang_model extends CI_Model{
     {
        try {
 	   $totalrecord = $this->gettotalrecord();
-		    $query=$this->db->query("SELECT a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+		    $query=$this->db->query("SELECT row_number() over (order by kode_barang nulls last) as rownum,'".$totalrecord[0]->totalrecord."' as totalrecord, a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
 			left join produk b 
 			on a.kode_produk=b.kode_produk
 			order by a.id limit 5") ;
@@ -75,7 +92,9 @@ class barang_model extends CI_Model{
 	public function pindahpage($pagestart){
 	
 		try {
-		    $query=$this->db->query("SELECT a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+		$totalrecord=$this->gettotalrecord();
+		
+		    $query=$this->db->query("SELECT row_number() over (order by kode_barang nulls last) as rownum, a.kode_barang,b.nama_produk,'".$totalrecord[0]->totalrecord."' as totalrecord,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
 			left join produk b 
 			on a.kode_produk=b.kode_produk order by id   limit 7 offset(4 * ('$pagestart'))") ;
             return $query->result();
