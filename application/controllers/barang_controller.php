@@ -239,7 +239,7 @@ public static function deleteDir($dirPath) {
 		}
 	
 	function simpan_data(){
-	//echo $_POST['kode_barang'].$_POST['nama_barang'].$_POST['kode_produk'].$_POST['satuan'].$_POST['harga_beli'].$_POST['kode_barang'].$_POST['harga_jual'].$_POST['stock'];
+	///echo $_POST['kode_barang'].$_POST['nama_barang'].$_POST['kode_produk'].$_POST['satuan'].$_POST['harga_beli'].$_POST['kode_barang'].$_POST['harga_jual'].$_POST['stock'];
 	$this->load->model('barang_model');
 	$this->barang_model->simpan_data(
 	$_POST['kode_barang'],
