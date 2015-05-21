@@ -76,10 +76,10 @@ class barang_model extends CI_Model{
     {
        try {
 	   $totalrecord = $this->gettotalrecord();
-		    $query=$this->db->query("SELECT row_number() over (order by kode_barang nulls last) as rownum,'".$totalrecord[0]->totalrecord."' as totalrecord, a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+		    $query=$this->db->query("SELECT row_number() over (order by a.id nulls last) as rownum,'".$totalrecord[0]->totalrecord."' as totalrecord, a.kode_barang,b.nama_produk,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
 			left join produk b 
 			on a.kode_produk=b.kode_produk
-			order by a.id limit 5") ;
+			order by rownum limit 5") ;
             return $query->result();
         
         }
@@ -94,9 +94,9 @@ class barang_model extends CI_Model{
 		try {
 		$totalrecord=$this->gettotalrecord();
 		
-		    $query=$this->db->query("SELECT row_number() over (order by kode_barang nulls last) as rownum, a.kode_barang,b.nama_produk,'".$totalrecord[0]->totalrecord."' as totalrecord,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+		    $query=$this->db->query("SELECT row_number() over (order by a.id nulls last) as rownum, a.kode_barang,b.nama_produk,'".$totalrecord[0]->totalrecord."' as totalrecord,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
 			left join produk b 
-			on a.kode_produk=b.kode_produk order by id   limit 7 offset(4 * ('$pagestart'))") ;
+			on a.kode_produk=b.kode_produk order by a.id   limit 5 offset($pagestart * 5)") ;
             return $query->result();
         
         }

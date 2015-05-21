@@ -170,7 +170,9 @@ if (!defined('BASEPATH'))
 					 
 						
 						function pindahpage(page,pagestart,pagefinish){
-							var pagenum=page.substring(5, 4);
+						
+							var pagenum=page.substring(4);
+							//alert(pagenum);
 							//alert(pagenum);
 							var targeturl="<?php echo base_url().'index.php/barang_controller/pindahpage'?>";
 							$.ajax({
@@ -188,7 +190,7 @@ if (!defined('BASEPATH'))
 							var x=pagefinish;
 							$("#tbody_barang").empty();
 							for (var i =0; i< obj.length; i++){
-							$("#tbody_barang").append("<tr><td></td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
+							$("#tbody_barang").append("<tr><td>" + obj[i]['rownum'] + "</td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:5px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
 								$("#button-hapus"+i).click(function(event){
 									event.preventDefault();
 									tampil_modal_hapus(this.id);
@@ -264,23 +266,51 @@ if (!defined('BASEPATH'))
 						
 						
 						function buat_paging(total_record){
+						//alert(total_record);
 						$("#paginationbarang").empty();
 							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-left"></i></a></li>');
 							var a=1;
 							var b=0;
-							for ( i=0; i< Math.floor(total_record/4); i++){
-							$("#paginationbarang").append('<li class="next" ><a  id="'+'page'+b+'"  >'+a+'</a></li>');
-							 $('#page'+b).bind('click', function() {
-									pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+							//alert(Math.floor(total_record/4)-2);
+							//for ( i=0; i< Math.floor(total_record/4)-1; i++){
+							
+							
+							var index=0;
+								var controll=1;
+								var controllid=0;
+									//for (i=0; i < $("#total_record2").val(); i ++){
+									for (i=0; i < total_record; i ++){
+									if (controll == 6){
+									index ++;
+										//$("#label-test-output").append("<label style='color:red'>"+index+"</label>");
+										
+										$("#paginationbarang").append('<li class="next" ><a  id="'+'page'+controllid+'"  >'+index+'</a></li>');
+										
+										 $('#page'+controllid).bind('click', function() {
+											pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
 									//$("#page-start").val(parseInt());
 									
-								});
-							a++;
-							b++;
-							}
-							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-right"></i></a></li>');
-							
-							
+										});
+										
+										controllid ++;
+										controll=1;
+										}else{
+										//$("#label-test-output").append("<label>"+index+"</label>");
+										}
+										a++;
+										b++;
+										
+										controll ++;
+									}
+									$("#paginationbarang").append('<li class="prev" id="'+'page'+index+'"><a>last page</a></li>');
+									 $('#page'+index).bind('click', function() {
+											pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+									//$("#page-start").val(parseInt());
+									
+										});
+									
+									
+									$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-right"></i></a></li>');
 						}
 						
 						
@@ -383,14 +413,16 @@ if (!defined('BASEPATH'))
 								}
 						function tampildatabarang(){
 							var targeturl="<?php echo base_url().'index.php/barang_controller/getbarangall'?>";
+							//alert(targeturl);
 							$.ajax({
 							url:targeturl,
 							type: "POST",
 							success: function (data) {
 							var obj = JSON.parse(data);
 							var jumlahrecord=obj.length;
+							$("#tbody_barang").empty();
 							for (var i = 0; i < obj.length; i++) {
-								$("#tbody_barang").append("<tr><td></td><td>" + obj[i]['kode_barang'] + "</td>" + "<td>" + obj[i]['nama_produk'] + "</td><td>" + obj[i]['nama_barang'] + "</td><td>" + obj[i]['satuan'] + "</td><td>" + obj[i]['harga_beli'] + "</td><td>" + obj[i]['harga_jual'] + "</td><td>" + obj[i]['stock'] + "</td><td><button style='margin-right:3px;' id='button-edit" + i + "' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus" + i + "' style='margin-right:3px;' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto" + i + "'type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
+								$("#tbody_barang").append("<tr><td>" + obj[i]['rownum'] + "</td><td>" + obj[i]['kode_barang'] + "</td>" + "<td>" + obj[i]['nama_produk'] + "</td><td>" + obj[i]['nama_barang'] + "</td><td>" + obj[i]['satuan'] + "</td><td>" + obj[i]['harga_beli'] + "</td><td>" + obj[i]['harga_jual'] + "</td><td>" + obj[i]['stock'] + "</td><td><button style='margin-right:3px;' id='button-edit" + i + "' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus" + i + "' style='margin-right:3px;' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto" + i + "'type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
 								$("#button-hapus" + i).click(function(event) {
 									event.preventDefault();
 									tampil_modal_hapus(this.id);
@@ -405,7 +437,8 @@ if (!defined('BASEPATH'))
 									event.preventDefault();
 									tampil_screen_upload(this.id);
 								});
-								
+								buat_paging(obj[i]['totalrecord']);
+								//buat_index_pagging();
 								buat_info_tabel(obj[0]['rownum'],obj[i]['rownum'],obj[i]['totalrecord']);
 							}
 							$("#page-start").val((obj.length-obj.length)+1);
@@ -611,7 +644,7 @@ if (!defined('BASEPATH'))
 							var obj = JSON.parse(data);
 							var jumlahrecord=obj.length;
 							for (var i =0; i< obj.length; i++){
-							
+						
 								$("#tbody_barang").append("<tr><td></td><td>"+obj[i]['kode_barang']+"</td>"+"<td>"+obj[i]['nama_produk']+"</td><td>"+obj[i]['nama_barang']+"</td><td>"+obj[i]['satuan']+"</td><td>"+obj[i]['harga_beli']+"</td><td>"+obj[i]['harga_jual']+"</td><td>"+obj[i]['stock']+"</td><td><button id='button-edit"+i+"' style='margin-right:3px;' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class='ace-icon fa fa-pencil bigger-120'></i></a></button><button id='button-hapus"+i+"' style='margin-right:3px' type='button' class='btn btn-white btn-pink btn-sm'><a href='#'><i class='ace-icon fa fa-trash-o bigger-120'></i></a></button><button id='button-foto"+i+"' type='button' class='btn btn-white btn-pink btn-sm'><a href='#' ><i class=' fa fa-camera'></i></a></button></tr>");
 								
 								$("#button-hapus"+i).click(function(event){
@@ -629,9 +662,15 @@ if (!defined('BASEPATH'))
 									tampil_screen_upload(this.id);
 								});
 								$("#modal-testing").fadeOut("slow");
+								
+							
 								buat_paging(obj[i]['totalrecord']);
 							}
 							
+							tampildatabarang();
+							
+						//window.location.href='<?php echo base_url().'index.php/base/getpage/barang/'?>'+username;
+
 							
 							},
 							error: function (jqXHR, textStatus, errorThrown) {
