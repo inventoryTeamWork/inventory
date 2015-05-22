@@ -107,6 +107,24 @@ class barang_model extends CI_Model{
 	
 	}
 	
+	public function pindahpagecari($pagestart,$param){
+	
+		try {
+		$totalrecord=$this->gettotalrecordcari($param);
+		
+		    $query=$this->db->query("SELECT row_number() over (order by a.id nulls last) as rownum, a.kode_barang,b.nama_produk,'".$totalrecord[0]->totalrecord."' as totalrecord,a.nama_barang,a.satuan,a.harga_beli,a.harga_jual,a.stock FROM barang a
+			left join produk b 
+			on a.kode_produk=b.kode_produk where a.nama_barang ilike '%'||'$param'||'%' order by a.id   limit 5 offset($pagestart * 5)") ;
+            return $query->result();
+        
+        }
+        
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }	
+	
+	}
+	
 	function get_product(){
 		try {
 		    $query=$this->db->query("select a.kode_produk,a.nama_produk from produk a") ;

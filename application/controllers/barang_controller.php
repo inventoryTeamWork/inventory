@@ -38,6 +38,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 		
 		}
 		
+		function pindahpagecari(){
+		
+		$this->load->model('barang_model');
+		$databarang=$this->barang_model->pindahpagecari($_POST['page'],$_POST['param']);
+		echo json_encode($databarang);
+		
+		}
+		
 		
 		public function cari_barang(){
 			$this->load->model('barang_model');
