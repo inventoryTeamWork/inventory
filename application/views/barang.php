@@ -123,6 +123,15 @@ if (!defined('BASEPATH'))
                         <div class="row">
                             <!-- content 1 is here -->
 							<div id="label-test-output"></div>
+							
+							
+							<div class="dataTables_paginate paging_bootstrap" >
+                                    <ul class="pagination" id="demo-group" >
+                                    </ul>
+                            </div>
+							
+							
+							
                         </div>
                         <!-- /.row -->
 
@@ -143,6 +152,354 @@ if (!defined('BASEPATH'))
 					
 					
 					 <script type="text/javascript">
+			function batas(){}		 
+					 
+					 var arraypage = [];
+	var a=1;
+	for (i=0; i< 6; i++){
+			arraypage[a]=a;			
+			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[a]+'</a></li>');
+	a++;
+	}
+	
+	//segment div id=4
+	$("#pg-4").click(function(event){
+	event.preventDefault();
+	pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+	create_pagging1(arraypage[0+1]);
+
+	});
+	
+	function create_pagging1(newpage){
+	
+	//$("#paginationbarang").append('<li class="next" ><a  id="'+'page'+controllid+'"  >'+index+'</a></li>');
+		var a1=newpage+1;
+		for (var i=0; i< 5; i++){
+		arraypage[i]=arraypage[a1];
+		a1++;
+		}
+		arraypage[5]=a1;
+		$('#demo-group').empty();
+		for (var i =0; i< 6; i++){
+		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
+			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
+			
+		}
+		
+		$("#pg-4").click(function(event){
+		event.preventDefault();
+		pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+		$("#pg-4").text();
+		pindahpage($("#pg-4").text(),$("#page-start").val(),$("#page-finish").val());
+        recreate_pagging1(arraypage[0+1]);
+		});
+		
+		//mengganti ke button berikutnya
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+		pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+        create_pagging2(arraypage[0+1]);
+		});
+		
+		
+		
+		//menambah navigasi mundur
+	//if(parseInt($("#0").text()) > 1){
+		$("#pg-1").click(function(event){
+		event.preventDefault();
+		arraypage[0]=arraypage[0]-1;
+		//alert(arraypage[0]-1 +' sebelum dikirim');
+		create_pagging1mundur(arraypage[0])
+		});
+	//}
+	
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});
+
+
+
+	
+		
+	}
+	
+	function recreate_pagging1(startpage){
+		var a1=startpage;
+		for (var i=0; i< 5; i++){
+		arraypage[i]=a1;
+		a1++;
+		}
+	
+		$('#demo-group').empty();
+		for (var i =0; i< 5; i++){
+			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
+			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
+		}
+		arraypage[5]=arraypage[i]+1;
+		//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
+		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
+		
+		$("#pg-4").click(function(event){
+		event.preventDefault();
+		pindahpage($("#pg-4").text(),$("#page-start").val(),$("#page-finish").val());
+		 recreate_pagging1(arraypage[0]+1);
+		});
+		
+		
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+		pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+       create_pagging2(arraypage[0+1]);
+		
+		});
+		
+		
+		$("#pg-1").click(function(event){
+			event.preventDefault();
+			//if(parseInt($("#0").text() ) > 1){
+			arraypage[0] --;
+			//alert('sebelum dikirim 2 -> '+arraypage[0]);
+				create_pagging1mundur(arraypage[0]);
+			//}
+		});
+		
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});
+
+		
+		
+		
+	}
+	
+	//segment div id =4
+	
+	
+	//segment div id=5
+	$("#pg-5").click(function(event){
+	event.preventDefault();
+	pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+	create_pagging2(arraypage[0+2]);
+
+	});
+	
+	
+	function create_pagging2(newpage){
+		var a1=newpage+1;
+		for (var i=0; i< 6; i++){
+			arraypage[i]=a1;
+			a1++;
+		}
+		//arraypage[5]=a1;
+		$('#demo-group').empty();
+		
+		for (var i =0; i< 6; i++){
+			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
+			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
+		}
+		
+	
+		
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+		pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+        recreate_pagging2(arraypage[0+1]);
+		
+		});
+		
+		
+		$("#pg-1").click(function(event){
+		event.preventDefault();
+		 pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+		arraypage[0]=arraypage[0]-1;
+		create_pagging1mundur(arraypage[0])
+		});
+		
+		
+		
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			 pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});
+		
+	}
+	
+	function recreate_pagging2(startpage){
+		var a1=startpage;
+		
+		for (var i=0; i< 5; i++){
+		arraypage[i]=a1;
+		a1++;
+		}
+	
+		$('#demo-group').empty();
+		for (var i =0; i< 5; i++){
+		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>')
+		}
+		arraypage[5]=arraypage[i]+1;
+		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>')
+		
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+		pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+		 recreate_pagging2(arraypage[0]+1);
+		});
+		
+		$("#pg-1").click(function(event){
+		event.preventDefault();
+		arraypage[0]=arraypage[0]-1;
+		//alert(arraypage[0]-1 +' sebelum dikirim');
+		create_pagging1mundur(arraypage[0])
+		});
+		
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});
+		
+		
+	}
+	
+	//menambah navigasi mundur
+	if(parseInt($("#pg-0").text()) > 1){
+		$("#pg-1").click(function(event){
+		event.preventDefault();
+		create_pagging1mundur(arraypage[0]-1);
+		});
+	}
+	
+	
+	
+	
+	
+	
+	
+	function create_pagging1mundur(newpage){
+		//alert(newpage);
+		var a1=newpage;
+		
+		for (var i=0; i< 6; i++){
+			arraypage[i]=a1;
+			//alert(arraypage[i]);
+			a1++;
+		}
+		//loop ke 2 untuk memastikan data di array udah di ganti
+		$('#demo-group').empty();
+		
+		for (var i =0; i< 6; i++){
+		
+			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
+			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>')
+		}
+		
+		
+		$("#pg-4").click(function(event){
+			event.preventDefault();
+			pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+		    recreate_pagging1(arraypage[0+1]);
+		
+		});
+		
+		
+		
+		$("#pg-1").click(function(event){
+			event.preventDefault();
+			 pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+			if(parseInt($("#pg-0").text()) > 1){
+			    create_pagging1mundur(arraypage[0]-1);
+			}
+		});
+		
+		
+		
+		
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			 
+			if(parseInt($("#pg-0").text()) > 1){
+			pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});
+		
+		
+		
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+		 pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
+         recreate_pagging2(arraypage[0+1]);
+		
+		});
+		
+		
+	}
+	
+	
+	
+	
+	function create_pagging2mundur(newpage){
+	if(newpage==0){
+	newpage++;
+	}
+		var a1=newpage;
+		
+		for (var i=0; i< 6; i++){
+			arraypage[i]=a1;
+			a1++;
+		}
+		$('#demo-group').empty();
+		
+		for (var i =0; i< 6; i++){
+			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>')
+			
+		}		
+		$("#pg-4").click(function(event){
+			event.preventDefault();
+		    recreate_pagging1(arraypage[0+1]);
+		
+		});
+				
+		$("#pg-1").click(function(event){
+			event.preventDefault();
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging1mundur(arraypage[0]-1);
+			}
+		});		
+		$("#pg-0").click(function(event){
+			event.preventDefault();
+			if(parseInt($("#pg-0").text()) > 1){
+				create_pagging2mundur(arraypage[0]-2);
+			}
+		});		
+		$("#pg-5").click(function(event){
+		event.preventDefault();
+       recreate_pagging2(arraypage[0+1]);
+		
+		});	
+	}		
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
+					 
 					 
 					  function gettotalrecord(){
 					  
@@ -162,19 +519,13 @@ if (!defined('BASEPATH'))
 						});
 					
 					  
-					  }
-					
-					 
-					 
-					
-					 
-					 
-						
+					  }		
+					  
 						function pindahpage(page,pagestart,pagefinish){
 						
-							var pagenum=page.substring(4);
-							//alert(pagenum);
-							//alert(pagenum);
+						var pagenum=0;
+						pagenum=page.substring(page.length-1);
+						
 							var targeturl="<?php echo base_url().'index.php/barang_controller/pindahpage'?>";
 							$.ajax({
 							url:targeturl,
@@ -400,6 +751,7 @@ if (!defined('BASEPATH'))
 						
 						function buat_paging(total_record){
 						//alert(total_record);
+						if(total_record <=25){
 						$("#paginationbarang").empty();
 							$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-left"></i></a></li>');
 							var a=1;
@@ -446,6 +798,9 @@ if (!defined('BASEPATH'))
 									
 									
 									$("#paginationbarang").append('<li class="prev"><a><i class="fa fa-angle-right"></i></a></li>');
+									
+									
+									}
 						}
 						
 						
