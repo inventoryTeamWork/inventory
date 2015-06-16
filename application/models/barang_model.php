@@ -72,6 +72,47 @@ class barang_model extends CI_Model{
         }	
 	}
 	
+	
+		function create_pagging(){
+		//$this->load->model('barang_model');
+		$totalrecord=$this->gettotalrecord();
+		$this->load->library('pagination');
+		//$config['base_url'] = 'http://localhost/github/inventory/index.php/barang_controller/pindahpage2/';
+		$config['per_page'] = 1;
+		$config['uri_segment'] = 3;
+		$config['total_rows'] =($totalrecord[0]->totalrecord/5)-1;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div ><ul class="pagination">';
+		$config['full_tag_close'] = '</ul></div><!--pagination-->';
+		$config['first_link'] = '&laquo; First';
+		$config['first_tag_open'] = '<li class="prev page">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_link'] = 'Last &raquo;';
+		$config['last_tag_open'] = '<li class="next page">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = 'Next &rarr;';
+		$config['next_tag_open'] = '<li class="next page">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&larr; Previous';
+		$config['prev_tag_open'] = '<li class="prev page">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="active"><a href="">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['num_tag_open'] = '<li class="page">';
+		$config['num_tag_close'] = '</li>';
+		$this->pagination->initialize($config);
+		return $this->pagination->create_links();
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	 public function getbarangall()
     {
        try {
