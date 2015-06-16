@@ -154,14 +154,23 @@ if (!defined('BASEPATH'))
 					 
 	var arraypage = [];
 	function createsegment(){
-	var a=1;
+	var a=1;	
+	//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
+		//membuat paging
 		for (i=0; i< 6; i++){
 			arraypage[a]=a;			
 			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[a]+'</a></li>');
 			$("#pg-"+i).css('cursor','pointer');
-		a++;
-	}
+			a++;
+		}
 	
+	//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 	
 	//segment div id=4
 	$("#pg-4").click(function(event){
@@ -202,11 +211,20 @@ if (!defined('BASEPATH'))
 		}
 		arraypage[5]=a1;
 		$('#demo-group').empty();
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 6; i++){
 		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[i]+'</a></li>');
-		$("#pg-"+i).css('cursor','pointer');
-			
+		$("#pg-"+i).css('cursor','pointer');	
 		}
+		
+		//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
+	
 		
 		$("#pg-4").click(function(event){
 		event.preventDefault();
@@ -247,13 +265,20 @@ if (!defined('BASEPATH'))
 		}
 	
 		$('#demo-group').empty();
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 5; i++){
 			$("#demo-group").append('<li class="next" onclick="ganti_page(this.textContent)" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
 			$("#pg-"+i).css('cursor','pointer');
 		}
 		arraypage[5]=arraypage[i]+1;
 		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  >'+arraypage[i]+'</a></li>');
-		
+		//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 		$("#pg-4").click(function(event){
 		event.preventDefault();
 		 recreate_pagging1(arraypage[0]+1);
@@ -285,13 +310,8 @@ if (!defined('BASEPATH'))
 		
 	}
 	
-	//segment div id =4
-	
-	
-	//segment div id=5
 	$("#pg-5").click(function(event){
 	event.preventDefault();
-	//pindahpage($("#pg-5").text(),$("#page-start").val(),$("#page-finish").val());
 	create_pagging2(arraypage[0+2]);
 
 	});
@@ -303,20 +323,22 @@ if (!defined('BASEPATH'))
 			arraypage[i]=a1;
 			a1++;
 		}
-		//arraypage[5]=a1;
 		$('#demo-group').empty();
-		
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 6; i++){
-			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
 			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[i]+'</a></li>');
 			$("#pg-"+i).css('cursor','pointer');
 		}
 		
-	
-		
+	//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 		$("#pg-5").click(function(event){
 		event.preventDefault();
-		//pindahpage($("#pg-5").text(),$("#page-start").val(),$("#page-finish").val());
         recreate_pagging2(arraypage[0+1]);
 		
 		});
@@ -324,7 +346,6 @@ if (!defined('BASEPATH'))
 		
 		$("#pg-1").click(function(event){
 		event.preventDefault();
-		// pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
 		arraypage[0]=arraypage[0]-1;
 		create_pagging1mundur(arraypage[0])
 		});
@@ -333,7 +354,6 @@ if (!defined('BASEPATH'))
 		
 		$("#pg-0").click(function(event){
 			event.preventDefault();
-			// pindahpage(this.id,$("#page-start").val(),$("#page-finish").val());
 			if(parseInt($("#pg-0").text()) > 1){
 				create_pagging2mundur(arraypage[0]-2);
 			}
@@ -350,23 +370,30 @@ if (!defined('BASEPATH'))
 		}
 	
 		$('#demo-group').empty();
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 5; i++){
 		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[i]+'</a></li>')
 		$("#pg-"+i).css('cursor','pointer');
 		}
 		arraypage[5]=arraypage[i]+1;
-		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'" onclick="ganti_page(this.textContent)"  >'+arraypage[i]+'</a></li>')
+		$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'" onclick="ganti_page(this.textContent)"  >'+arraypage[i]+'</a></li>');
+		
+		//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 		$("#pg-"+i).css('cursor','pointer');
 		$("#pg-5").click(function(event){
 		event.preventDefault();
-		//pindahpage($("#pg-5").text(),$("#page-start").val(),$("#page-finish").val());
 		 recreate_pagging2(arraypage[0]+1);
 		});
 		
 		$("#pg-1").click(function(event){
 		event.preventDefault();
 		arraypage[0]=arraypage[0]-1;
-		//alert(arraypage[0]-1 +' sebelum dikirim');
 		create_pagging1mundur(arraypage[0])
 		});
 		
@@ -406,15 +433,19 @@ if (!defined('BASEPATH'))
 		}
 		//loop ke 2 untuk memastikan data di array udah di ganti
 		$('#demo-group').empty();
-		
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 6; i++){
-		
-			//$('#demo-group').append('<div id="pg-'+i+'" class="mypagging">'+arraypage[i]+'</div>');
 			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[i]+'</a></li>')
 			$("#pg-"+i).css('cursor','pointer');
 		}
 		
-		
+		//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 		$("#pg-4").click(function(event){
 			event.preventDefault();
 			//pindahpage($("#pg-4").text(),$("#page-start").val(),$("#page-finish").val());
@@ -470,11 +501,19 @@ if (!defined('BASEPATH'))
 			a1++;
 		}
 		$('#demo-group').empty();
-		
+		//membuat menu first
+		$("#demo-group").append('<li><a href="#"><i class="ace-icon fa fa-angle-double-left"></i></a></li>');
+		//membuat menu prev
+		$("#demo-group").append('<li class="prev"><a href="#"><i class="fa fa-angle-left"></i></a></li>');
 		for (var i =0; i< 6; i++){
 			$("#demo-group").append('<li class="next" ><a  id="pg-'+i+'"  onclick="ganti_page(this.textContent)" >'+arraypage[i]+'</a></li>')
 			$("#pg-"+i).css('cursor','pointer');
-		}		
+		}
+
+		//membuat menu next
+		$("#demo-group").append('<li class="next"><a href="#"><i class="fa fa-angle-right"></i></a></li>');
+	//membuat menu last
+	$('#demo-group').append('<li><a href="#"><i class="ace-icon fa fa-angle-double-right"></i></a></li>');
 		$("#pg-4").click(function(event){
 			event.preventDefault();
 		    recreate_pagging1(arraypage[0+1]);
@@ -532,10 +571,8 @@ if (!defined('BASEPATH'))
 					  }		
 					  
 						function pindahpage(page,pagestart,pagefinish){
-						alert('page :' +page+'   is detected');
 						var pagenum=page;
-						//pagenum=page.substring(page.length-1);
-						
+					
 							var targeturl="<?php echo base_url().'index.php/barang_controller/pindahpage'?>";
 							$.ajax({
 							url:targeturl,
@@ -546,8 +583,6 @@ if (!defined('BASEPATH'))
 							
 							success: function (data) {
 						
-							//alert(parseInt(pagestart)+2);
-							
 							var obj = JSON.parse(data);
 							var x=pagefinish;
 							$("#tbody_barang").empty();
